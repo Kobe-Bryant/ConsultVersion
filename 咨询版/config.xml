@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<app>
+	<tab>
+		<tabItem name="hotspot" status="1" lable="热点"/>
+		<tabItem name="product" status="1"  lable="产品"/>
+		<tabItem name="service" status="1" lable="服务"/>
+		<tabItem name="community" status="1" lable="社区"/>
+		<tabItem name="more" status="1" lable="更多"/>
+	</tab>
+	
+	<product>
+		<module name="beauty" status="1" lable="美图"/>
+		<module name="video" status="1"  lable="视频"/>
+		<module name="wallpaper" status="1"  lable="壁纸"/>
+		<module name="solid" status="0" lable="立体"/>
+		<productShowType showType="1"/>
+	</product>
+	
+	<solidList>
+		<solid picName="1" picType=".png" picCount="36"/>
+	<solidList/>
+	
+	<videoList>
+		<video isLocal="1" path="" pic="p1.png" status="1" value="v1" videotype="1" desc="MP4：云来，客如云来"/>
+		<video isLocal="1" path="" pic="p2.png" status="1" value="v2" videotype="0" desc="MP3：小倩-一瞬间"/>
+	</videoList>
+	
+	
+	<hot>
+		<hotTab name="recommend" status="1" value="热点推荐"/>
+		<hotTab name="discount" status="1" value="资讯新闻"/>
+		<hotTab name="trends" status="1" value="公司动态"/>
+	</hot>
+	
+	<urls>
+        <url name="accessLink" value="http://app.yunlai.cn:8080/APPInterfaceServer"/>
+		<!--<url name="accessLink" value="http://202.104.149.214:8080/APPInterfaceServerTest"/>-->
+		<url name="yySearch" value="http://yy.3g.cn"/>
+		<url name="regLink" value="http://szeca.3g.yunlai.cn/user/register"/>
+		<url name="feedback" value="http://szeca.3g.yunlai.cn/feedback"/>
+		<url name="shopLink" value="http://szeca.3g.yunlai.cn"/>
+		<url name="sinaUrl" value="http://v.t.sina.com.cn/share/share.php?title=%@"/>
+		<url name="tencentUrl" value="http://v.t.qq.com/share/share.php?title=%@"/>
+	</urls>
+	
+	<shopInfos>
+		<!-- <infoItem name="siteId" value="1456"/> -->
+		<!-- <infoItem name="shopId" value="1476" shopName="szeca"/> -->
+		
+		<infoItem name="siteId" value="1455"/>
+		<infoItem name="shopId" value="1475" shopName="szeca"/>
+		<issharetowechat name="wechatshare" value="yes"/>
+	</shopInfos>
+	
+	<strings>
+		<string name="share" value="《资讯版》——微信分享新功能iPhone版，欢迎你也来体验。 "/>
+		<string name="invite" value="《资讯版》——微信分享新功能iPhone版，欢迎你也来体验。 "/>
+		<string name="emailSubject" value="邮件主题"/>
+		<string name="emailContent" value="邮件正文"/>
+	</strings>
+	<showNavBg value="1">
+		<color name="red" value="0.47"/>
+		<color name="green" value="0.71"/>
+		<color name="blue" value="0.1"/>
+		<color name="font_red" value="0"/>
+		<color name="font_green" value="0"/>
+		<color name="font_blue" value="0"/>
+	</showNavBg>
+</app>

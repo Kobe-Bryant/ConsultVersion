@@ -1,0 +1,131 @@
+//
+//  QVerifyWebViewController.m
+//  QWeiboSDK4iOSDemo
+//
+//  Created   on 11-1-14.
+//   
+//
+
+#import "QVerifyWebViewController.h"
+#import "QWeiboSyncApi.h"
+
+
+#define VERIFY_URL @"http://open.t.qq.com/cgi-bin/authorize?oauth_token="
+
+@implementation QVerifyWebViewController
+
+@synthesize delegate;
+@synthesize appKey;
+@synthesize appSecret;
+@synthesize tokenKey;
+@synthesize tokenSecret;
+
+// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization.
+    }
+    return self;
+}
+
+
+
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+- (void)viewDidLoad {
+    [super viewDidLoad];
+	mWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 480.0f)];
+	mWebView.delegate = self;
+	[self.view addSubview:mWebView];
+	
+	self.title = @"腾讯微博";
+
+	NSString *url = [NSString stringWithFormat:@"%@%@", VERIFY_URL, tokenKey];
+	NSURL *requestUrl = [NSURL URLWithString:url];
+	NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+	[mWebView loadRequest:request];
+}
+
+
+/*
+// Override to allow orientations other than the default portrait orientation.
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Return YES for supported orientations.
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+*/
+
+- (void)didReceiveMemoryWarning {
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc. that aren't in use.
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+	self.appKey = nil;
+	self.appSecret = nil;
+	self.tokenKey = nil;
+	self.tokenSecret = nil;
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+
+- (void)dealloc {
+	[appKey release];
+	[appSecret release];
+	[tokenKey release];
+	[tokenSecret release];
+    [super dealloc];
+}
+
+#pragma mark -
+#pragma mark private methods
+
+-(NSString*) valueForKey:(NSString *)key ofQuery:(NSString*)query
+{
+	NSArray *pairs = [query componentsSeparatedByString:@"&"];
+	for(NSString *aPair in pairs){
+		NSArray *keyAndValue = [aPair componentsSeparatedByString:@"="];
+		if([keyAndValue count] != 2) continue;
+		if([[keyAndValue objectAtIndex:0] isEqualToString:key]){
+			return [keyAndValue objectAtIndex:1];
+		}
+	}
+	return nil;
+}
+
+#pragma mark -
+#pragma mark UIWebViewDelegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+	
+	NSString *query = [[request URL] query];
+	NSString *verifier = [self valueForKey:@"oauth_verifier" ofQuery:query];
+	
+	if (verifier && ![verifier isEqualToString:@""]) {
+		
+		QWeiboSyncApi *api = [[[QWeiboSyncApi alloc] init] autorelease];
+		NSString *retString = [api getAccessTokenWithConsumerKey:appKey 
+												  consumerSecret:appSecret 
+												 requestTokenKey:tokenKey 
+											  requestTokenSecret:tokenSecret 
+														  verify:verifier];
+		NSLog(@"\nget access token:%@", retString);
+		
+		[self.navigationController popViewControllerAnimated:NO];
+		
+		[delegate parseTokenKeyWithResponse:retString];
+		
+		
+		return NO;
+	}
+	
+	return YES;
+}
+
+
+@end
